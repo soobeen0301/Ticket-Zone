@@ -55,26 +55,54 @@ export class UserService {
     }
   }
 
-  async login(email: string, password: string) {
+  async login(loginDto: LoginDto) {
+    const {email, password} = loginDto
+
     const user = await this.userRepository.findOne({
       select: ['id', 'email', 'password'],
       where: { email },
     });
     if (_.isNil(user)) {
-      throw new UnauthorizedException('이메일을 확인해주세요.');
+      throw new UnauthorizedException('이메일이 일치하지 않습니다.');
     }
 
     if (!(await compare(password, user.password))) {
-      throw new UnauthorizedException('비밀번호를 확인해주세요.');
+      throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
     }
 
     const payload = { email, sub: user.id };
+    const accessToken = this.jwtService.sign(payload);
     return {
-      access_token: this.jwtService.sign(payload),
+        status : HTTP_STATUS.OK,
+        message : '로그인 성공하였습니다.',
+        data : {accessToken},
     };
   }
 
   async findByEmail(email: string) {
     return await this.userRepository.findOneBy({ email });
   }
+
+ async getUserInfo(userId : number) {
+    const user = await this.userRepository.findOne({where : {id : userId}});
+
+    if(!user) {
+        throw new UnauthorizedException('사용자를 찾을 수 없습니다.');
+    }
+
+    return {
+        status : HTTP_STATUS.OK,
+        data : {
+            id : user.id,
+            email : user.email,
+            name : user.name,
+            nickname : user.nickname,
+            point : user.point,
+            role : user.role,
+            createdAt : user.createdAt,
+            updatedAt : user.updatedAt
+        },
+
+    };
+ }
 }
