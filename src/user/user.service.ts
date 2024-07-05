@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from './entities/user.entity';
-import { SignUpDto } from './dto/signUp.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 import { LoginDto } from './dto/login.dto';
 import { Role } from './types/userRole.type';
 import { HTTP_STATUS } from '../constants/http-status.constant';
