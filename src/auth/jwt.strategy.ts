@@ -23,7 +23,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log('payload:', payload)
 
     const user = await this.userRepository.findOne
     ({where : {email : payload.email},
@@ -34,7 +33,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new NotFoundException('해당하는 사용자를 찾을 수 없습니다.');
     }
 
-    console.log('validate:',user)
     return user;
   }
 }
