@@ -1,7 +1,7 @@
 import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Category } from '../types/show-category.type';
 
-export class createShowDto {
+export class CreateShowDto {
   @IsString()
   @IsNotEmpty({ message: '공연 이름을 입력해주세요.' })
   showName: string;

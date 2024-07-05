@@ -10,6 +10,7 @@ import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { AdminGuard } from 'src/auth/admin.guard';
 import { UserModule } from 'src/user/user.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { AuthModule } from 'src/auth/auth.module';
     }),
     TypeOrmModule.forFeature([Show]),
     UserModule,
-    AuthModule
+    AuthModule,
+    CacheModule.register(),
   ],
 
   providers: [ShowService, JwtStrategy, AdminGuard],
