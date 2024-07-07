@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
-import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
@@ -22,6 +22,7 @@ export class ShowService {
   async createShow(createShowDto:CreateShowDto) {
     const {showName, showContent, showCategory, place,price, imageUrl, dateTime, totalSeats} = createShowDto
 
+    //공연 이름 기준으로 동일한 이름이 있는지 체크
     const existingShow = await this.showRepository.findOne({where : {showName}});
     if (existingShow) {
       throw new ConflictException(
@@ -29,6 +30,7 @@ export class ShowService {
       );
     }
 
+    //공연 생성 (데이터베이스에 저장)
     const newShow = await this.showRepository.save({
       showName,
       showContent,
@@ -40,6 +42,7 @@ export class ShowService {
       totalSeats,
     });
 
+    //반환 내용
     return {
         status : HTTP_STATUS.CREATED,
         message: '공연 생성이 완료되었습니다.',
@@ -58,6 +61,7 @@ export class ShowService {
     }
   }
 
+  //반환 데이터 정의
   private formatShow(show : Show) {
     return {
       showId : show.id,
@@ -76,6 +80,7 @@ export class ShowService {
 
   /* 공연 조회 */
   async findAll() {
+    //캐싱 된 데이터 찾기
     const cachedShows = await this.cacheManager.get<Show[]>('shows');
     if (!_.isNil(cachedShows)) {
       return {
@@ -84,7 +89,10 @@ export class ShowService {
       };
     }
 
-    const shows = await this.showRepository.find();
+    //데이터 베이스에서 찾기
+    const shows = await this.showRepository.find({
+      order : {createdAt : 'DESC'}
+    });
     await this.cacheManager.set('shows', shows);
     return {
       status : HTTP_STATUS.OK,
@@ -92,6 +100,7 @@ export class ShowService {
     };
   }
 
+  // 카테고리별 조회
  async getShowByCategory(category : Category){
   const shows = await this.showRepository.find({where : {showCategory : category}});
   return {
@@ -100,11 +109,27 @@ export class ShowService {
   }
  }
 
+ /* 공연 검색 */
+ async getShowByName(showName : string) {
+
+  const shows = await this.showRepository.findAndCount({
+    where : {showName : Like(`%${showName}%`)}, // 공연명의 일부만 검색해도 나올 수 있도록
+    order : {createdAt : 'DESC'},
+  });
+
+  //공연개수가 0이라면, 오류 반환
+  if (shows[1] === 0 ) {
+    throw new NotFoundException('존재하지 않는 공연입니다.')
+  }
+
+  return {
+    status : HTTP_STATUS.OK,
+    data : shows[0].map(this.formatShow)
+  }
+}
+
   /* 공연 상세 조회 */
   async findOne(id : number) {
-    if (_.isNaN(id)) {
-      throw new BadRequestException('존재하지 않는 공연 ID 입니다.');
-    }
 
     const show = await this.showRepository.findOne ({where : {id}})
     if (!show) {
@@ -113,7 +138,8 @@ export class ShowService {
 
     return {
       status : HTTP_STATUS.OK,
-      data : this.formatShow
+      data : this.formatShow(show)
     }
   }
+
 }

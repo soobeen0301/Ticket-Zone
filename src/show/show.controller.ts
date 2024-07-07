@@ -29,6 +29,12 @@ export class ShowController {
     return this.showService.findAll();
   }
 
+  /* 공연 검색 */
+  @Get('search')
+  getShowByName(@Query('showName') showName: string) {
+    return this.showService.getShowByName(showName);
+  }
+
 /* 공연 상세 조회 */
   @Get(':showId')
   findOne(@Param('showId') id: string) {
