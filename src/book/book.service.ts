@@ -76,15 +76,21 @@ export class BookService {
     };
   }
 
+  /* 예매 목록 조회 */
   async getUserBookings(userId : number): Promise<any[]> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('사용자를 찾을 수 없습니다.');
+    }
+
     const bookings = await this.bookRepository.find({
         where : {user: {id: userId}},
         relations: ['show'],
         order: {createdAt: 'DESC'}
     });
 
-    if (bookings.length === 0) {
-        throw new NotFoundException('예매한 공연 내역이 없습니다.')
+    if (!bookings || bookings.length === 0) {
+        return [];
     }
 
     return bookings.map(booking => ({
