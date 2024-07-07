@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, Query,Param, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { Show } from './entities/show.entity';
 import { ShowService } from './show.service';
 import { CreateShowDto } from './dto/create-show.dto';
 import { AdminGuard } from 'src/auth/admin.guard';

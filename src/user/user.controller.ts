@@ -5,7 +5,8 @@ import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
-import { UserInfo } from 'src/utils/userInfo.decorator';
+import { UserInfo } from 'src/utils/user-info.decorator';
+
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

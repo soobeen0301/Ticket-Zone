@@ -1,6 +1,6 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-
-import { Role } from '../types/userRole.type';
+import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Role } from '../types/user-role.type';
+import { Book } from 'src/book/entities/Book.entity';
 
 @Index('email', ['email'], { unique: true })
 @Entity({
@@ -33,4 +33,7 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany( () => Book, (book) => book.user)
+  bookings: Book[];
 }
