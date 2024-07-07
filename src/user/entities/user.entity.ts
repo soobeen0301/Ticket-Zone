@@ -1,6 +1,6 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Role } from '../types/user-role.type';
-import { Book } from 'src/book/entities/Book.entity';
+import { Book } from 'src/book/entities/book.entity';
 
 @Index('email', ['email'], { unique: true })
 @Entity({

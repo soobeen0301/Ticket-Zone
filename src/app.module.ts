@@ -11,7 +11,7 @@ import { ShowModule } from './show/show.module';
 import { BookModule } from './book/book.module';
 import { User } from './user/entities/user.entity';
 import { Show } from './show/entities/show.entity';
-import { Book } from './book/entities/Book.entity';
+import { Book } from './book/entities/book.entity';
 
 const typeOrmModuleOptions = {
   useFactory: async (
