@@ -1,6 +1,7 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 
-import {Category} from '../types/show-category.type'
+import { Category } from '../types/show-category.type'
+import { Book } from 'src/book/entities/Book.entity';
 
 @Index('showName', ['showName'], { unique: true })
 @Entity({
@@ -39,4 +40,7 @@ export class Show {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Book, (book) => book.show)
+  bookings: Book[];
 }

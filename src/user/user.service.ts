@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { SignUpDto } from './dto/sign-up.dto';
 import { LoginDto } from './dto/login.dto';
-import { Role } from './types/userRole.type';
+import { Role } from './types/user-role.type';
 import { HTTP_STATUS } from '../constants/http-status.constant';
 
 @Injectable()

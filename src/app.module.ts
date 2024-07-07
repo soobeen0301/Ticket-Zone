@@ -6,10 +6,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import { AuthModule } from './auth/auth.module';
-import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 import { ShowModule } from './show/show.module';
+import { BookModule } from './book/book.module';
+import { User } from './user/entities/user.entity';
 import { Show } from './show/entities/show.entity';
+import { Book } from './book/entities/Book.entity';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -22,7 +24,7 @@ const typeOrmModuleOptions = {
     host: configService.get('DB_HOST'),
     port: configService.get('DB_PORT'),
     database: configService.get('DB_NAME'),
-    entities: [User, Show],
+    entities: [User, Show, Book],
     synchronize: configService.get('DB_SYNC'),
     logging: true,
   }),
@@ -46,7 +48,8 @@ const typeOrmModuleOptions = {
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     AuthModule,
     UserModule,
-    ShowModule
+    ShowModule,
+    BookModule
   ],
   controllers: [],
   providers: [],
