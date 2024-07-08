@@ -42,7 +42,6 @@ export class ShowService {
       totalSeats,
     });
 
-    //반환 내용
     return {
         status : HTTP_STATUS.CREATED,
         message: '공연 생성이 완료되었습니다.',

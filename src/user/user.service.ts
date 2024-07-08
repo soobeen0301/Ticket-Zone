@@ -20,6 +20,7 @@ export class UserService {
     private readonly jwtService: JwtService,
   ) {}
 
+  /* 회원가입 */
   async signUp(signUpDto:SignUpDto) {
     const {email, password, name, nickname} = signUpDto
 
@@ -30,7 +31,9 @@ export class UserService {
       );
     }
 
+    //비밀번호 해시화
     const hashedPassword = await hash(password, 10);
+    //유저 생성
     const newUser = await this.userRepository.save({
       email,
       password: hashedPassword,
@@ -55,6 +58,7 @@ export class UserService {
     }
   }
 
+  /* 로그인 */
   async login(loginDto: LoginDto) {
     const {email, password} = loginDto
 
@@ -62,6 +66,7 @@ export class UserService {
       select: ['id', 'email', 'password'],
       where: { email },
     });
+
     if (_.isNil(user)) {
       throw new UnauthorizedException('이메일이 일치하지 않습니다.');
     }
@@ -82,7 +87,8 @@ export class UserService {
   async findByEmail(email: string) {
     return await this.userRepository.findOneBy({ email });
   }
-
+  
+ /* 사용자 정보 조회 */
  async getUserInfo(userId : number) {
     const user = await this.userRepository.findOne({where : {id : userId}});
 

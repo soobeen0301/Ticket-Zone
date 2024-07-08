@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, NotFoundException, Inject } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException, Inject, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Book } from './entities/book.entity';
@@ -19,6 +19,7 @@ export class BookService {
     private showRepository: Repository<Show>,
   ) {}
 
+  /* 예매 생성 */
   async createBook(createBookDto: CreateBookDto, userId: number) {
     const { showName, dateTime } = createBookDto;
 
@@ -36,18 +37,21 @@ export class BookService {
       throw new BadRequestException('해당 시간에 공연이 없습니다.');
     }
 
+    //포인트 계산
     if (user.point < show.price) {
       throw new BadRequestException('포인트가 부족합니다.');
     }
 
+    //좌석 계산
     const BooksCount = await this.bookRepository.count({
       where: { show: { id: show.id }, dateTime },
     });
 
     if (BooksCount >= show.totalSeats) {
-      throw new BadRequestException('예약이 이미 만석입니다.');
+      throw new ConflictException('공연이 만석입니다.');
     }
 
+    //예매 생성
     let newBook;
     await this.bookRepository.manager.transaction(async (manager) => {
      const book = this.bookRepository.create({ user, show, dateTime });

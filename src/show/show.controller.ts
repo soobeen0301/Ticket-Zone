@@ -10,7 +10,7 @@ import { Category } from './types/show-category.type';
 export class ShowController {
   constructor(private readonly showService: ShowService) {}
 
-  /* 권한 확인 */
+ /* 사용자 확인 */
   @UseGuards(AuthGuard('jwt'), AdminGuard)
 
   /* 공연 생성 */

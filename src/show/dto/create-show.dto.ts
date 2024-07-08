@@ -30,6 +30,6 @@ export class CreateShowDto {
   dateTime: string[];
 
   @IsNumber()
-  @IsNotEmpty({ message: '공연 좌석수를 입력해주세요.' })
+  @IsNotEmpty({ message: '공연 좌석 수를 입력해주세요.' })
   totalSeats: number;
 }
