@@ -19,7 +19,7 @@ import { User } from 'src/user/entities/user.entity';
       inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([User]),
-    UserModule, 
+    UserModule,
   ],
   providers: [JwtStrategy],
 })

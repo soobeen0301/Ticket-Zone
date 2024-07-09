@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query,Param, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { ShowService } from './show.service';
@@ -10,7 +18,7 @@ import { Category } from './types/show-category.type';
 export class ShowController {
   constructor(private readonly showService: ShowService) {}
 
- /* 사용자 확인 */
+  /* 사용자 확인 */
   @UseGuards(AuthGuard('jwt'), AdminGuard)
 
   /* 공연 생성 */
@@ -19,9 +27,9 @@ export class ShowController {
     return await this.showService.createShow(createShowDto);
   }
 
-/* 공연 조회 */
+  /* 공연 조회 */
   @Get()
-  findAll(@Query('category') category : string) {
+  findAll(@Query('category') category: string) {
     if (category) {
       return this.showService.getShowByCategory(category as Category);
     }
@@ -34,10 +42,9 @@ export class ShowController {
     return this.showService.getShowByName(showName);
   }
 
-/* 공연 상세 조회 */
+  /* 공연 상세 조회 */
   @Get(':showId')
   findOne(@Param('showId') id: string) {
     return this.showService.findOne(+id);
   }
-  
 }

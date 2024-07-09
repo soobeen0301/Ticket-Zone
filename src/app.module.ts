@@ -15,7 +15,7 @@ import { Book } from './book/entities/book.entity';
 
 const typeOrmModuleOptions = {
   useFactory: async (
-    configService: ConfigService,
+    configService: ConfigService
   ): Promise<TypeOrmModuleOptions> => ({
     namingStrategy: new SnakeNamingStrategy(),
     type: 'mysql',
@@ -49,7 +49,7 @@ const typeOrmModuleOptions = {
     AuthModule,
     UserModule,
     ShowModule,
-    BookModule
+    BookModule,
   ],
   controllers: [],
   providers: [],

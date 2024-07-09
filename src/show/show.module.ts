@@ -27,6 +27,6 @@ import { CacheModule } from '@nestjs/cache-manager';
   ],
 
   providers: [ShowService, JwtStrategy, AdminGuard],
-  controllers: [ShowController]
+  controllers: [ShowController],
 })
 export class ShowModule {}

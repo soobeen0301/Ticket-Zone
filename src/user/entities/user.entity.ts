@@ -1,4 +1,12 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { Role } from '../types/user-role.type';
 import { Book } from 'src/book/entities/book.entity';
 
@@ -18,7 +26,7 @@ export class User {
 
   @Column({ type: 'varchar', nullable: false })
   name: string;
-  
+
   @Column({ type: 'varchar', unique: true, nullable: false })
   nickname: string;
 
@@ -34,6 +42,6 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany( () => Book, (book) => book.user)
+  @OneToMany(() => Book, (book) => book.user)
   bookings: Book[];
 }

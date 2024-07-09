@@ -27,7 +27,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   /* 사용자 정보 조회 */
   @Get()
-  async getUserInfo(@UserInfo() user : User) {
+  async getUserInfo(@UserInfo() user: User) {
     return await this.userService.getUserInfo(user.id);
   }
 }

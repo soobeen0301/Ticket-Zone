@@ -9,6 +9,6 @@ import { Show } from 'src/show/entities/show.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Book, User, Show])],
   providers: [BookService],
-  controllers: [BookController]
+  controllers: [BookController],
 })
 export class BookModule {}

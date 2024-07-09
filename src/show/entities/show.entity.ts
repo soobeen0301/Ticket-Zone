@@ -1,6 +1,14 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 
-import { Category } from '../types/show-category.type'
+import { Category } from '../types/show-category.type';
 import { Book } from 'src/book/entities/book.entity';
 
 @Index('showName', ['showName'], { unique: true })
@@ -17,9 +25,9 @@ export class Show {
   @Column({ type: 'varchar', nullable: false })
   showContent: string;
 
-  @Column({ type: 'enum', enum : Category, nullable: false })
+  @Column({ type: 'enum', enum: Category, nullable: false })
   showCategory: Category;
-  
+
   @Column({ type: 'varchar', nullable: false })
   place: string;
 

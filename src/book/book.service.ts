@@ -1,4 +1,10 @@
-import { Injectable, BadRequestException, NotFoundException, Inject, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+  Inject,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Book } from './entities/book.entity';
@@ -16,7 +22,7 @@ export class BookService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(Show)
-    private showRepository: Repository<Show>,
+    private showRepository: Repository<Show>
   ) {}
 
   /* 예매 생성 */
@@ -54,8 +60,8 @@ export class BookService {
     //예매 생성
     let newBook;
     await this.bookRepository.manager.transaction(async (manager) => {
-     const book = this.bookRepository.create({ user, show, dateTime });
-     newBook = await manager.save(book);
+      const book = this.bookRepository.create({ user, show, dateTime });
+      newBook = await manager.save(book);
 
       user.point -= show.price;
       await manager.save(user);
@@ -81,35 +87,35 @@ export class BookService {
   }
 
   /* 예매 목록 조회 */
-  async getUserBookings(userId : number): Promise<any[]> {
+  async getUserBookings(userId: number): Promise<any[]> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new NotFoundException('사용자를 찾을 수 없습니다.');
     }
 
     const bookings = await this.bookRepository.find({
-        where : {user: {id: userId}},
-        relations: ['show'],
-        order: {createdAt: 'DESC'}
+      where: { user: { id: userId } },
+      relations: ['show'],
+      order: { createdAt: 'DESC' },
     });
 
     if (!bookings || bookings.length === 0) {
-        return [];
+      return [];
     }
 
-    return bookings.map(booking => ({
-        status : HTTP_STATUS.OK,
-        date : {
-            bookId: booking.id,
-            showName: booking.show.showName,
-            place: booking.show.place,
-            price: booking.show.price,
-            dateTime: booking.show.dateTime,
-            status: booking.status,
-            bookDate: booking.dateTime,
-            createdAt: booking.createdAt,
-            updatedAt: booking.updatedAt
-        },
+    return bookings.map((booking) => ({
+      status: HTTP_STATUS.OK,
+      date: {
+        bookId: booking.id,
+        showName: booking.show.showName,
+        place: booking.show.place,
+        price: booking.show.price,
+        dateTime: booking.show.dateTime,
+        status: booking.status,
+        bookDate: booking.dateTime,
+        createdAt: booking.createdAt,
+        updatedAt: booking.updatedAt,
+      },
     }));
   }
 }
