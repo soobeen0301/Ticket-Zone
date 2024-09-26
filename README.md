@@ -84,7 +84,7 @@ $ npm run test:cov
 
 ## API 명세서
 
-https://melted-gram-487.notion.site/Node-js-API-0f815b0b37164189b3bd8f7ed2ef1086
+[https://melted-gram-487.notion.site/Node-js-API-0f815b0b37164189b3bd8f7ed2ef1086](https://melted-gram-487.notion.site/Node-js-API-ce047bb2f9b84ee887c5f0e66f17c39f?pvs=74)
 
 ## ERD
 
